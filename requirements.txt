@@ -1,0 +1,7 @@
+faster-whisper
+pydantic
+tqdm
+colorama
+customtkinter
+pyinstaller
+packaging

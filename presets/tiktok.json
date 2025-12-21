@@ -1,0 +1,26 @@
+{
+  "font": {
+    "name": "Arial",
+    "size": 70,
+    "color": "&H00FFFFFF",
+    "outline_color": "&H00000000",
+    "outline_width": 3.0,
+    "shadow_depth": 0.0
+  },
+  "highlight": {
+    "enabled": true,
+    "color": "&H008000FF",
+    "text_color": "&H00FFFFFF",
+    "outline_color": "&H008000FF",
+    "outline_width": 40.0,
+    "animation": "pop"
+  },
+  "chunking": {
+    "max_chars": 25,
+    "max_words": 6,
+    "max_lines": 2,
+    "gap_threshold": 0.5
+  },
+  "margin_bottom": 250,
+  "clean_fillers": false
+}
