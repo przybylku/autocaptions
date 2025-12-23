@@ -11,8 +11,9 @@
         "enabled": true,
         "color": "&H0000FF00", 
         "text_color": "&H00FFFFFF",
-        "outline_color": "&H0000FF00",
-        "outline_width": 30.0
+        "outline_color": "&H00000000",
+        "outline_width": 0.0,
+        "padding": 10.0
     },
     "chunking": {
         "max_chars": 40,

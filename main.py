@@ -37,10 +37,13 @@ def process_video(input_file: str, output_file: str = None, preset: str = "tikto
                 config.font.color = style_options['color']
             if 'outline_color' in style_options and style_options['outline_color']:
                 config.font.outline_color = style_options['outline_color']
+                config.highlight.outline_color = style_options['outline_color']
             if 'highlight_color' in style_options and style_options['highlight_color']:
                 config.highlight.color = style_options['highlight_color']
             if 'highlight_text_color' in style_options and style_options['highlight_text_color']:
                 config.highlight.text_color = style_options['highlight_text_color']
+            if 'position' in style_options and style_options['position']:
+                config.position = style_options['position']
                 
     except Exception as e:
         log_error(str(e))

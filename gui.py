@@ -141,6 +141,12 @@ class App(ctk.CTk):
         self.font_size_entry = ctk.CTkEntry(self.font_frame, placeholder_text="60")
         self.font_size_entry.grid(row=1, column=1, padx=10, pady=10, sticky="ew")
 
+        # Position
+        ctk.CTkLabel(self.font_frame, text="Position:").grid(row=2, column=0, padx=10, pady=10)
+        self.position_option = ctk.CTkOptionMenu(self.font_frame, values=["Bottom", "Middle", "Top"])
+        self.position_option.set("Bottom")
+        self.position_option.grid(row=2, column=1, padx=10, pady=10, sticky="ew")
+
         # Colors
         self.color_frame = ctk.CTkFrame(tab)
         self.color_frame.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
@@ -232,6 +238,9 @@ class App(ctk.CTk):
         
         font_size = self.font_size_entry.get()
         if font_size: style_options['font_size'] = font_size
+        
+        position = self.position_option.get()
+        if position: style_options['position'] = position.lower()
         
         text_color = self.text_color_entry.get()
         if text_color: style_options['color'] = self.hex_to_ass(text_color)

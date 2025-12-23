@@ -11,8 +11,9 @@
     "enabled": true,
     "color": "&H008000FF",
     "text_color": "&H00FFFFFF",
-    "outline_color": "&H008000FF",
-    "outline_width": 40.0,
+    "outline_color": "&H00000000",
+    "outline_width": 0.0,
+    "padding": 15.0,
     "animation": "pop"
   },
   "chunking": {

@@ -55,7 +55,8 @@ ScaledBorderAndShadow: yes
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
 Style: Default,{config.font.name},{config.font.size},{config.font.color},&H000000FF,{config.font.outline_color},&H00000000,-1,0,0,0,100,100,0,0,1,{config.font.outline_width},{config.font.shadow_depth},2,10,10,{config.margin_bottom},1
-Style: HighlightBox,{config.font.name},{config.font.size},{config.highlight.text_color},&H000000FF,{config.highlight.outline_color},{config.highlight.color},-1,0,0,0,100,100,0,0,3,{config.highlight.outline_width},0,2,10,10,{config.margin_bottom},1
+Style: HighlightBox,{config.font.name},{config.font.size},{config.highlight.text_color},&H000000FF,{config.highlight.color},&H00000000,-1,0,0,0,100,100,0,0,3,{config.highlight.padding},0,2,10,10,{config.margin_bottom},1
+Style: HighlightText,{config.font.name},{config.font.size},{config.highlight.text_color},&H000000FF,{config.highlight.outline_color},&H00000000,-1,0,0,0,100,100,0,0,1,{config.highlight.outline_width},0,2,10,10,{config.margin_bottom},1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -65,6 +66,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
     
     # Screen center X
     center_x = 1080 // 2
+    screen_height = 1920
     
     for seg in segments:
         start_time = format_time(seg.start)
@@ -94,8 +96,13 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
         # Start X (Left edge of the line)
         start_left_x = center_x - (total_width // 2)
         
-        # Y position: 1920 - margin_bottom
-        pos_y = 1920 - config.margin_bottom
+        # Y position calculation
+        if config.position == "top":
+            pos_y = config.margin_bottom # Using margin_bottom as margin_top here
+        elif config.position == "middle":
+            pos_y = screen_height // 2
+        else: # bottom
+            pos_y = screen_height - config.margin_bottom
         
         current_x = start_left_x
         
@@ -119,16 +126,16 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
                 anim_tags = ""
                 if hasattr(config.highlight, 'animation') and config.highlight.animation == "pop":
                     # Pop animation: Scale up to 115% quickly
-                    # \fscx115\fscy115
-                    # To make it "pop" we can just set it larger.
-                    # Or animate it: \t(0,100,\fscx115\fscy115)
-                    # Let's just set it larger for now, it looks cleaner as a "highlight" state.
                     anim_tags = "\\fscx115\\fscy115"
                 
+                # Layer 1: Box (HighlightBox)
                 # BorderStyle=3 draws a box around the text.
-                # Since we are rendering just the word, the box will be around the word.
-                # Perfect rectangle!
-                events.append(f"Dialogue: 1,{w_start},{w_end},HighlightBox,,0,0,0,,{{\\pos({word_center_x},{pos_y}){anim_tags}}}{word.word}")
+                # We make the text transparent (\1a&HFF&) so we only see the box.
+                events.append(f"Dialogue: 1,{w_start},{w_end},HighlightBox,,0,0,0,,{{\\pos({word_center_x},{pos_y})\\1a&HFF&{anim_tags}}}{word.word}")
+                
+                # Layer 2: Text (HighlightText)
+                # Draws the text face and outline on top of the box.
+                events.append(f"Dialogue: 2,{w_start},{w_end},HighlightText,,0,0,0,,{{\\pos({word_center_x},{pos_y}){anim_tags}}}{word.word}")
             
             # Advance X
             current_x += w_width + space_width

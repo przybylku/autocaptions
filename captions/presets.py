@@ -29,8 +29,9 @@ class HighlightConfig(BaseModel):
     # Yellow: Blue=00, Green=FF, Red=FF -> &H00FFFF
     
     text_color: str = "&H00FFFFFF" # Text color when highlighted (usually white)
-    outline_color: str = "&H0000FFFF" # The "box" color (thick outline)
-    outline_width: float = 40.0 # Thick border to simulate box
+    outline_color: str = "&H00000000" # Outline color for the highlighted text (usually black)
+    outline_width: float = 0.0 # Outline width for highlighted text (0 to remove)
+    padding: float = 10.0 # Padding for the highlight box
     animation: str = "pop" # "pop", "none"
 
 class ChunkingConfig(BaseModel):
@@ -44,6 +45,7 @@ class PresetConfig(BaseModel):
     highlight: HighlightConfig = Field(default_factory=HighlightConfig)
     chunking: ChunkingConfig = Field(default_factory=ChunkingConfig)
     margin_bottom: int = 150
+    position: str = "bottom" # "bottom", "middle", "top"
     clean_fillers: bool = False
 
 def load_preset(name_or_path: str) -> PresetConfig:
